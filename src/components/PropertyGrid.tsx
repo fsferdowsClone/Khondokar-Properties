@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { PropertyCard } from './PropertyCard';
+import { DetailModal } from './DetailModal';
 import { db, handleFirestoreError, OperationType } from '@/src/firebase';
 import { cn } from '@/src/lib/utils';
 import { collection, onSnapshot, query, where, orderBy } from 'firebase/firestore';
@@ -15,12 +16,14 @@ interface Property {
   image: string;
   category: string;
   isFeatured: boolean;
+  description?: string;
 }
 
 export const PropertyGrid = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [activeFilter, setActiveFilter] = useState('All');
   const [loading, setLoading] = useState(true);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -46,6 +49,25 @@ export const PropertyGrid = () => {
 
   return (
     <section id="properties" className="py-32 px-6 md:px-12 max-w-7xl mx-auto">
+      <DetailModal
+        isOpen={!!selectedProperty}
+        onClose={() => setSelectedProperty(null)}
+        title={selectedProperty?.name || ''}
+        image={selectedProperty?.image || ''}
+        metadata={{
+          location: selectedProperty?.location,
+          price: selectedProperty?.price,
+          details: selectedProperty?.details,
+          category: selectedProperty?.category
+        }}
+        content={
+          <>
+            <p>{selectedProperty?.description || "This premium property offers an unparalleled living experience in one of Dhaka's most sought-after locations. Featuring state-of-the-art amenities, elegant architectural design, and spacious interiors, it represents the pinnacle of luxury real estate."}</p>
+            <p>Key features include 24/7 security, dedicated parking, high-speed elevators, and a rooftop garden with panoramic city views. The interior is finished with high-quality imported materials, ensuring both durability and aesthetic appeal.</p>
+          </>
+        }
+      />
+
       <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-24 gap-12">
         <div className="max-w-3xl">
           <motion.span
@@ -101,6 +123,7 @@ export const PropertyGrid = () => {
               price={prop.price}
               details={prop.details}
               image={prop.image}
+              onClick={() => setSelectedProperty(prop)}
             />
           ))}
           {filteredProperties.length === 0 && (

@@ -8,9 +8,10 @@ interface PropertyProps {
   price: string;
   details: string;
   image: string;
+  onClick?: () => void;
 }
 
-export const PropertyCard: React.FC<PropertyProps> = ({ name, location, price, details, image }) => {
+export const PropertyCard: React.FC<PropertyProps> = ({ name, location, price, details, image, onClick }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -18,6 +19,7 @@ export const PropertyCard: React.FC<PropertyProps> = ({ name, location, price, d
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
       className="group cursor-pointer relative"
+      onClick={onClick}
     >
       <div className="relative aspect-[4/5] overflow-hidden rounded-xl mb-6 luxury-shadow">
         <img

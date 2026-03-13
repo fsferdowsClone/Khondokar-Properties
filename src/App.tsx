@@ -9,8 +9,9 @@ import { VideoShowcase } from './components/VideoShowcase';
 import { BookingForm } from './components/BookingForm';
 import { Footer } from './components/Footer';
 import { ContextualInfo } from './components/ContextualInfo';
-import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
+import { DetailModal } from './components/DetailModal';
+import { motion, AnimatePresence } from 'motion/react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Admin Components
 import { AdminLayout } from './components/admin/AdminLayout';
@@ -31,6 +32,8 @@ const PublicSite = () => {
   const [testimonials, setTestimonials] = useState<any[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
   const [siteContent, setSiteContent] = useState<any>(null);
+  const [selectedBlog, setSelectedBlog] = useState<any | null>(null);
+  const [blogIndex, setBlogIndex] = useState(0);
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -84,6 +87,24 @@ const PublicSite = () => {
     <div className="relative min-h-screen bg-background selection:bg-accent-gold selection:text-background">
       <Navbar />
       <ContextualInfo />
+      
+      <DetailModal
+        isOpen={!!selectedBlog}
+        onClose={() => setSelectedBlog(null)}
+        title={selectedBlog?.title || ''}
+        image={selectedBlog?.image || ''}
+        metadata={{
+          category: selectedBlog?.category,
+          date: selectedBlog?.createdAt?.toDate().toLocaleDateString()
+        }}
+        content={
+          <>
+            <p className="text-xl font-serif italic text-accent-gold mb-6">{selectedBlog?.excerpt}</p>
+            <p>The real estate landscape in Dhaka is evolving rapidly, driven by infrastructure developments and a growing demand for luxury living spaces. In this article, we explore the key factors shaping the market and what investors should look for in the coming year.</p>
+            <p>From the lush greenery of Gulshan to the modern skyline of Banani, each neighborhood offers unique opportunities. Our expert team has analyzed current trends to provide you with actionable insights for your next property investment.</p>
+          </>
+        }
+      />
       
       <main>
         <div data-info="hero" className="relative group/info">
@@ -173,7 +194,7 @@ const PublicSite = () => {
         </section>
         
         {/* Blog Section */}
-        <section id="blog" data-info="blog" className="py-32 px-6 md:px-12 bg-background">
+        <section id="blog" data-info="blog" className="py-32 px-6 md:px-12 bg-background overflow-hidden">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
               <div>
@@ -194,49 +215,64 @@ const PublicSite = () => {
                   {t('blog.title')}
                 </motion.h2>
               </div>
-              <motion.button
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                className="text-accent-gold font-semibold flex items-center gap-2 hover:gap-4 transition-all"
-              >
-                {t('blog.cta')} <ArrowRight size={20} />
-              </motion.button>
+              <div className="flex items-center gap-4">
+                <button 
+                  onClick={() => setBlogIndex(prev => Math.max(0, prev - 1))}
+                  disabled={blogIndex === 0}
+                  className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-accent-gold hover:border-accent-gold transition-all disabled:opacity-20"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button 
+                  onClick={() => setBlogIndex(prev => Math.min(blogs.length - 1, prev + 1))}
+                  disabled={blogIndex >= blogs.length - 1}
+                  className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-accent-gold hover:border-accent-gold transition-all disabled:opacity-20"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              {blogs.map((post, i) => (
-                <motion.article
-                  key={post.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="group cursor-pointer"
-                >
-                  <div className="aspect-[16/10] rounded-xl overflow-hidden mb-6">
-                    <img 
-                      src={post.image} 
-                      alt={post.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-4 text-xs uppercase tracking-widest font-semibold text-accent-gold">
-                      <span>{post.category}</span>
-                      <span className="w-1 h-1 bg-border rounded-full" />
-                      <span className="text-text-muted">{post.createdAt?.toDate().toLocaleDateString() || 'Just now'}</span>
+            <div className="relative">
+              <motion.div 
+                animate={{ x: `-${blogIndex * (100 / (window.innerWidth > 768 ? 3 : 1))}%` }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="flex gap-8"
+              >
+                {blogs.map((post, i) => (
+                  <motion.article
+                    key={post.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="min-w-full md:min-w-[calc(33.333%-21.333px)] group cursor-pointer"
+                    onClick={() => setSelectedBlog(post)}
+                  >
+                    <div className="aspect-[16/10] rounded-xl overflow-hidden mb-6 luxury-shadow">
+                      <img 
+                        src={post.image} 
+                        alt={post.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        referrerPolicy="no-referrer"
+                      />
                     </div>
-                    <h3 className="text-2xl font-serif group-hover:text-accent-gold transition-colors leading-snug">
-                      {post.title}
-                    </h3>
-                    <p className="text-text-muted line-clamp-2 leading-relaxed">
-                      {post.excerpt}
-                    </p>
-                  </div>
-                </motion.article>
-              ))}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-4 text-[10px] uppercase tracking-widest font-bold text-accent-gold">
+                        <span>{post.category}</span>
+                        <span className="w-1 h-1 bg-accent-gold/30 rounded-full" />
+                        <span className="text-text-muted">{post.createdAt?.toDate().toLocaleDateString() || 'Just now'}</span>
+                      </div>
+                      <h3 className="text-2xl font-serif group-hover:text-accent-gold transition-colors duration-300 leading-snug">
+                        {post.title}
+                      </h3>
+                      <p className="text-text-muted line-clamp-2 leading-relaxed text-sm">
+                        {post.excerpt}
+                      </p>
+                    </div>
+                  </motion.article>
+                ))}
+              </motion.div>
             </div>
           </div>
         </section>
