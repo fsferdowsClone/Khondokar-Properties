@@ -23,13 +23,18 @@ import { VideoManager } from './components/admin/VideoManager';
 
 import { db, handleFirestoreError, OperationType } from './firebase';
 import { collection, onSnapshot, query, orderBy, limit, doc } from 'firebase/firestore';
+import { useLanguage } from './contexts/LanguageContext';
+import { seedDemoData } from './utils/seedData';
 
 const PublicSite = () => {
   const [testimonials, setTestimonials] = useState<any[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
   const [siteContent, setSiteContent] = useState<any>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
+    seedDemoData();
+    
     const unsubTestimonials = onSnapshot(collection(db, 'testimonials'), 
       (snap) => {
         setTestimonials(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
@@ -117,7 +122,7 @@ const PublicSite = () => {
             viewport={{ once: true }}
             className="text-accent-gold uppercase tracking-widest text-xs font-semibold mb-4 block"
           >
-            Client Stories
+            {t('testimonials.badge')}
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -125,7 +130,7 @@ const PublicSite = () => {
             viewport={{ once: true }}
             className="text-4xl md:text-6xl font-serif leading-tight mb-20"
           >
-            Trusted by <span className="italic">Families</span> & Investors
+            {t('testimonials.title')}
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -162,7 +167,7 @@ const PublicSite = () => {
                   viewport={{ once: true }}
                   className="text-accent-gold uppercase tracking-widest text-xs font-semibold mb-4 block"
                 >
-                  Insights & News
+                  {t('blog.badge')}
                 </motion.span>
                 <motion.h2
                   initial={{ opacity: 0, y: 20 }}
@@ -170,7 +175,7 @@ const PublicSite = () => {
                   viewport={{ once: true }}
                   className="text-4xl md:text-6xl font-serif leading-tight"
                 >
-                  Latest from <span className="italic">Our</span> Blog
+                  {t('blog.title')}
                 </motion.h2>
               </div>
               <motion.button
@@ -179,7 +184,7 @@ const PublicSite = () => {
                 viewport={{ once: true }}
                 className="text-accent-gold font-semibold flex items-center gap-2 hover:gap-4 transition-all"
               >
-                View All Posts <ArrowRight size={20} />
+                {t('blog.cta')} <ArrowRight size={20} />
               </motion.button>
             </div>
 

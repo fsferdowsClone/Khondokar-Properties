@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { PropertyCard } from './PropertyCard';
 import { db, handleFirestoreError, OperationType } from '@/src/firebase';
 import { collection, onSnapshot, query, where, orderBy } from 'firebase/firestore';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface Property {
   id: string;
@@ -19,6 +20,7 @@ export const PropertyGrid = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [activeFilter, setActiveFilter] = useState('All');
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     let q = query(collection(db, 'properties'), orderBy('createdAt', 'desc'));
@@ -59,7 +61,7 @@ export const PropertyGrid = () => {
             viewport={{ once: true }}
             className="text-4xl md:text-6xl font-serif leading-tight"
           >
-            Featured <span className="italic">Properties</span>
+            {t('featured.title')}
           </motion.h2>
         </div>
         <motion.div

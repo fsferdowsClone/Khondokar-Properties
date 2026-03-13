@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,11 +18,11 @@ export const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '#' },
-    { name: 'Properties', href: '#properties' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'About', href: '#about' },
-    { name: 'Contact', href: '#contact' },
+    { name: t('nav.home'), href: '#' },
+    { name: t('nav.properties'), href: '#properties' },
+    { name: t('nav.projects'), href: '#projects' },
+    { name: t('nav.about'), href: '#about' },
+    { name: t('nav.contact'), href: '#contact' },
   ];
 
   return (
@@ -54,18 +56,35 @@ export const Navbar = () => {
               {link.name}
             </a>
           ))}
+          
+          <button 
+            onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}
+            className="flex items-center gap-2 text-sm font-medium text-text-muted hover:text-accent-gold transition-colors"
+          >
+            <Globe size={16} />
+            {language === 'en' ? 'Bangla' : 'English'}
+          </button>
+
           <button className="bg-accent-gold text-background px-6 py-2 rounded-small text-sm font-semibold hover:bg-white transition-all duration-300">
             Book Visit
           </button>
         </div>
 
         {/* Mobile Toggle */}
-        <button
-          className="md:hidden text-text-primary"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="flex items-center gap-4 md:hidden">
+          <button 
+            onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}
+            className="text-text-muted hover:text-accent-gold"
+          >
+            <Globe size={20} />
+          </button>
+          <button
+            className="text-text-primary"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
