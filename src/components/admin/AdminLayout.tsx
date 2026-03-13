@@ -71,35 +71,6 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
     );
   }
 
-  if (!user) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-background px-6">
-        <div className="max-w-md w-full bg-surface p-10 rounded-xl border border-border text-center">
-          <img 
-            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yNTAgNTBMNTAgMjAwSDkwVjQ1MEgyMTBWMzAwSDI5MFY0NTBIMzkwVjIwMEg0NTBMMjUwIDUwWiIgZmlsbD0iIzAwMkI0OSIvPgo8cGF0aCBkPSJNMjUwIDUwTDE1MCAxMjVMMjUwIDIwMEwzNTAgMTI1TDI1MCA1MFoiIGZpbGw9IiMyRDZBNzQiLz4KPHBhdGggZD0iTTI1MCAyMDBMMTUwIDI3NVY0NTBIMjUwVjIwMFoiIGZpbGw9IiNBNjhCNUIiIG9wYWNpdHk9IjAuOCIvPgo8L3N2Zz4=" 
-            alt="Khondokar Properties" 
-            className="w-20 h-20 mx-auto mb-6 object-contain"
-            referrerPolicy="no-referrer"
-          />
-          <h1 className="text-2xl font-serif mb-2">Identity Verification</h1>
-          <p className="text-text-muted mb-8">Password accepted. Now sign in with Google to verify your identity for database access.</p>
-          <button
-            onClick={loginWithGoogle}
-            className="w-full bg-accent-gold text-background py-3 rounded-small font-semibold hover:bg-white transition-all flex items-center justify-center gap-3"
-          >
-            Verify with Google
-          </button>
-          <button 
-            onClick={() => { setIsAuthorized(false); sessionStorage.removeItem('admin_auth'); }}
-            className="mt-4 text-xs text-text-muted hover:text-white"
-          >
-            Back to Password
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   const menuItems = [
     { name: 'Dashboard', icon: LayoutDashboard, path: '/admin' },
     { name: 'Properties', icon: Building2, path: '/admin/properties' },
@@ -171,26 +142,53 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
         </nav>
 
         <div className="p-4 border-t border-border">
-          <div className="flex items-center gap-3 px-4 py-3 mb-2">
-            <img src={user.photoURL || ''} alt="" className="w-8 h-8 rounded-full" />
-            <div className="overflow-hidden">
-              <p className="text-xs font-semibold truncate">{user.displayName}</p>
-              <p className="text-[10px] text-text-muted truncate">{user.email}</p>
+          {user ? (
+            <>
+              <div className="flex items-center gap-3 px-4 py-3 mb-2">
+                <img src={user.photoURL || ''} alt="" className="w-8 h-8 rounded-full" />
+                <div className="overflow-hidden">
+                  <p className="text-xs font-semibold truncate">{user.displayName}</p>
+                  <p className="text-[10px] text-text-muted truncate">{user.email}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  logout().then(() => {
+                    sessionStorage.removeItem('admin_auth');
+                    setIsAuthorized(false);
+                    navigate('/');
+                  });
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 text-text-muted hover:text-red-400 transition-colors text-sm font-medium"
+              >
+                <LogOut size={20} />
+                Logout
+              </button>
+            </>
+          ) : (
+            <div className="space-y-3">
+              <p className="text-[10px] text-text-muted px-4 leading-relaxed">
+                Signed in with password. To edit database, verify with Google.
+              </p>
+              <button
+                onClick={loginWithGoogle}
+                className="w-full bg-accent-gold text-background py-2 rounded-small font-semibold hover:bg-white transition-all text-xs"
+              >
+                Verify with Google
+              </button>
+              <button
+                onClick={() => {
+                  sessionStorage.removeItem('admin_auth');
+                  setIsAuthorized(false);
+                  navigate('/');
+                }}
+                className="w-full flex items-center gap-3 px-4 py-2 text-text-muted hover:text-white transition-colors text-xs font-medium"
+              >
+                <LogOut size={16} />
+                Exit Admin
+              </button>
             </div>
-          </div>
-          <button
-            onClick={() => {
-              logout().then(() => {
-                sessionStorage.removeItem('admin_auth');
-                setIsAuthorized(false);
-                navigate('/');
-              });
-            }}
-            className="w-full flex items-center gap-3 px-4 py-3 text-text-muted hover:text-red-400 transition-colors text-sm font-medium"
-          >
-            <LogOut size={20} />
-            Logout
-          </button>
+          )}
         </div>
       </aside>
 
