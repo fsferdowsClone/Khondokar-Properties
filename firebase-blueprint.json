@@ -1,0 +1,96 @@
+{
+  "entities": {
+    "Property": {
+      "title": "Property",
+      "description": "Real estate property listing",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Property name" },
+        "location": { "type": "string", "description": "Location in Dhaka" },
+        "price": { "type": "string", "description": "Price in Crore" },
+        "details": { "type": "string", "description": "Bedrooms, size, etc." },
+        "image": { "type": "string", "description": "Main image URL" },
+        "gallery": { "type": "array", "items": { "type": "string" }, "description": "Additional images" },
+        "isFeatured": { "type": "boolean", "description": "Featured on homepage" },
+        "category": { "type": "string", "enum": ["Luxury Apartments", "Family Homes", "Commercial Spaces", "Investment Projects"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "location", "price", "details", "image", "category"]
+    },
+    "BlogPost": {
+      "title": "Blog Post",
+      "description": "Article for the real estate blog",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "slug": { "type": "string" },
+        "content": { "type": "string", "description": "Rich text content" },
+        "excerpt": { "type": "string" },
+        "featuredImage": { "type": "string" },
+        "seoTitle": { "type": "string" },
+        "seoDescription": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "slug", "content", "featuredImage"]
+    },
+    "Testimonial": {
+      "title": "Testimonial",
+      "description": "Client review",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "text": { "type": "string" },
+        "photo": { "type": "string" },
+        "rating": { "type": "number" }
+      },
+      "required": ["name", "role", "text"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Property visit inquiry",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "location": { "type": "string" },
+        "propertyType": { "type": "string" },
+        "budget": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "contacted", "closed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "phone", "email", "location"]
+    },
+    "SiteSettings": {
+      "title": "Site Settings",
+      "description": "Global website configuration and content",
+      "type": "object",
+      "properties": {
+        "heroTitle": { "type": "string" },
+        "heroSubtitle": { "type": "string" },
+        "heroBackground": { "type": "string" },
+        "contactEmail": { "type": "string" },
+        "contactPhone": { "type": "string" },
+        "officeAddress": { "type": "string" },
+        "socialLinks": {
+          "type": "object",
+          "properties": {
+            "facebook": { "type": "string" },
+            "instagram": { "type": "string" },
+            "linkedin": { "type": "string" },
+            "twitter": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/properties": { "schema": "Property", "description": "Collection of property listings" },
+    "/blogPosts": { "schema": "BlogPost", "description": "Collection of blog articles" },
+    "/testimonials": { "schema": "Testimonial", "description": "Collection of client testimonials" },
+    "/bookings": { "schema": "Booking", "description": "Collection of visit requests" },
+    "/settings/global": { "schema": "SiteSettings", "description": "Global site settings document" }
+  }
+}
