@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import { db, handleFirestoreError, OperationType } from '@/src/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 export const HeroSection = () => {
+  const [content, setContent] = useState<any>(null);
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(doc(db, 'siteContent', 'home'), 
+      (snap) => {
+        if (snap.exists()) setContent(snap.data());
+      },
+      (error) => handleFirestoreError(error, OperationType.GET, 'siteContent/home')
+    );
+    return unsubscribe;
+  }, []);
 
   return (
     <section className="relative h-screen w-full overflow-hidden flex items-center justify-center px-6">
@@ -33,10 +46,10 @@ export const HeroSection = () => {
             Excellence in Every Square Foot
           </span>
           <h1 className="text-5xl md:text-8xl font-serif mb-8 leading-[1.1] text-balance">
-            Find Your <span className="italic">Perfect</span> Property
+            {content?.heroHeadline || <>Find Your <span className="italic">Perfect</span> Property</>}
           </h1>
           <p className="text-text-muted text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
-            Discover premium apartments, homes, and investment properties with Khondokar Properties.
+            {content?.heroSubheading || "Discover premium apartments, homes, and investment properties with Khondokar Properties."}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <button className="group relative bg-accent-gold text-background px-10 py-4 rounded-small font-semibold overflow-hidden transition-all duration-300 hover:bg-white">

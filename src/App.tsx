@@ -8,15 +8,47 @@ import { WhyChooseUs } from './components/WhyChooseUs';
 import { BookingForm } from './components/BookingForm';
 import { Footer } from './components/Footer';
 import { motion } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
 
 // Admin Components
 import { AdminLayout } from './components/admin/AdminLayout';
 import { Dashboard } from './components/admin/Dashboard';
 import { PropertyManager } from './components/admin/PropertyManager';
 import { BookingManager } from './components/admin/BookingManager';
+import { BlogManager } from './components/admin/BlogManager';
+import { TestimonialManager } from './components/admin/TestimonialManager';
+import { ContentManager } from './components/admin/ContentManager';
+
+import { db, handleFirestoreError, OperationType } from './firebase';
+import { collection, onSnapshot, query, orderBy, limit, doc } from 'firebase/firestore';
 
 const PublicSite = () => {
+  const [testimonials, setTestimonials] = useState<any[]>([]);
+  const [blogs, setBlogs] = useState<any[]>([]);
+  const [siteContent, setSiteContent] = useState<any>(null);
+
   useEffect(() => {
+    const unsubTestimonials = onSnapshot(collection(db, 'testimonials'), 
+      (snap) => {
+        setTestimonials(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      },
+      (error) => handleFirestoreError(error, OperationType.LIST, 'testimonials')
+    );
+
+    const unsubBlogs = onSnapshot(query(collection(db, 'blogPosts'), orderBy('createdAt', 'desc'), limit(3)), 
+      (snap) => {
+        setBlogs(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      },
+      (error) => handleFirestoreError(error, OperationType.LIST, 'blogPosts')
+    );
+
+    const unsubContent = onSnapshot(doc(db, 'siteContent', 'home'), 
+      (snap) => {
+        if (snap.exists()) setSiteContent(snap.data());
+      },
+      (error) => handleFirestoreError(error, OperationType.GET, 'siteContent/home')
+    );
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -93,25 +125,9 @@ const PublicSite = () => {
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {[
-              {
-                name: "Ahmed Rahman",
-                role: "Property Investor",
-                text: "The professionalism and transparency at Khondokar Properties are unmatched. They made my investment journey seamless."
-              },
-              {
-                name: "Sarah Karim",
-                role: "Home Owner",
-                text: "Finding our dream home in Gulshan was so easy with their expert guidance. Highly recommended for premium service."
-              },
-              {
-                name: "Zayed Hossain",
-                role: "Business Owner",
-                text: "Their commercial property portfolio is impressive. We found the perfect office space in Banani thanks to them."
-              }
-            ].map((t, i) => (
+            {testimonials.length > 0 ? testimonials.slice(0, 3).map((t, i) => (
               <motion.div
-                key={i}
+                key={t.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -125,7 +141,78 @@ const PublicSite = () => {
                   <p className="text-accent-gold text-xs uppercase tracking-widest font-semibold">{t.role}</p>
                 </div>
               </motion.div>
-            ))}
+            )) : (
+              <p className="col-span-full text-text-muted">Loading testimonials...</p>
+            )}
+          </div>
+        </section>
+        
+        {/* Blog Section */}
+        <section id="blog" className="py-32 px-6 md:px-12 bg-background">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+              <div>
+                <motion.span
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="text-accent-gold uppercase tracking-widest text-xs font-semibold mb-4 block"
+                >
+                  Insights & News
+                </motion.span>
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="text-4xl md:text-6xl font-serif leading-tight"
+                >
+                  Latest from <span className="italic">Our</span> Blog
+                </motion.h2>
+              </div>
+              <motion.button
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="text-accent-gold font-semibold flex items-center gap-2 hover:gap-4 transition-all"
+              >
+                View All Posts <ArrowRight size={20} />
+              </motion.button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {blogs.map((post, i) => (
+                <motion.article
+                  key={post.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="group cursor-pointer"
+                >
+                  <div className="aspect-[16/10] rounded-xl overflow-hidden mb-6">
+                    <img 
+                      src={post.image} 
+                      alt={post.title} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4 text-xs uppercase tracking-widest font-semibold text-accent-gold">
+                      <span>{post.category}</span>
+                      <span className="w-1 h-1 bg-border rounded-full" />
+                      <span className="text-text-muted">{post.createdAt?.toDate().toLocaleDateString() || 'Just now'}</span>
+                    </div>
+                    <h3 className="text-2xl font-serif group-hover:text-accent-gold transition-colors leading-snug">
+                      {post.title}
+                    </h3>
+                    <p className="text-text-muted line-clamp-2 leading-relaxed">
+                      {post.excerpt}
+                    </p>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -148,9 +235,9 @@ export default function App() {
         <Route path="/admin" element={<AdminLayout><Dashboard /></AdminLayout>} />
         <Route path="/admin/properties" element={<AdminLayout><PropertyManager /></AdminLayout>} />
         <Route path="/admin/bookings" element={<AdminLayout><BookingManager /></AdminLayout>} />
-        <Route path="/admin/blog" element={<AdminLayout><div className="text-center py-20 text-text-muted">Blog Management Coming Soon</div></AdminLayout>} />
-        <Route path="/admin/testimonials" element={<AdminLayout><div className="text-center py-20 text-text-muted">Testimonial Management Coming Soon</div></AdminLayout>} />
-        <Route path="/admin/content" element={<AdminLayout><div className="text-center py-20 text-text-muted">Site Content Editor Coming Soon</div></AdminLayout>} />
+        <Route path="/admin/blog" element={<AdminLayout><BlogManager /></AdminLayout>} />
+        <Route path="/admin/testimonials" element={<AdminLayout><TestimonialManager /></AdminLayout>} />
+        <Route path="/admin/content" element={<AdminLayout><ContentManager /></AdminLayout>} />
         <Route path="/admin/settings" element={<AdminLayout><div className="text-center py-20 text-text-muted">Site Settings Coming Soon</div></AdminLayout>} />
         
         {/* Fallback */}

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { CheckCircle2 } from 'lucide-react';
+import { db, handleFirestoreError, OperationType } from '@/src/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 const reasons = [
   "Verified property listings",
@@ -11,6 +13,18 @@ const reasons = [
 ];
 
 export const WhyChooseUs = () => {
+  const [content, setContent] = useState<any>(null);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(doc(db, 'siteContent', 'home'), 
+      (snap) => {
+        if (snap.exists()) setContent(snap.data());
+      },
+      (error) => handleFirestoreError(error, OperationType.GET, 'siteContent/home')
+    );
+    return unsubscribe;
+  }, []);
+
   return (
     <section id="about" className="py-32 px-6 md:px-12 bg-surface overflow-hidden">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -56,7 +70,7 @@ export const WhyChooseUs = () => {
             viewport={{ once: true }}
             className="text-4xl md:text-6xl font-serif leading-tight mb-8"
           >
-            Why <span className="italic">Khondokar</span> Properties?
+            {content?.aboutHeadline || <>Why <span className="italic">Khondokar</span> Properties?</>}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
@@ -64,7 +78,7 @@ export const WhyChooseUs = () => {
             viewport={{ once: true }}
             className="text-text-muted text-lg mb-12 leading-relaxed"
           >
-            We don't just sell properties; we build legacies. Our commitment to transparency and excellence has made us a trusted name in Dhaka's premium real estate market.
+            {content?.aboutText || "We don't just sell properties; we build legacies. Our commitment to transparency and excellence has made us a trusted name in Dhaka's premium real estate market."}
           </motion.p>
 
           <div className="space-y-6">

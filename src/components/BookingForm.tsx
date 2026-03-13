@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Send, CheckCircle } from 'lucide-react';
 import { db, handleFirestoreError, OperationType } from '@/src/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, onSnapshot } from 'firebase/firestore';
 
 export const BookingForm = () => {
+  const [content, setContent] = useState<any>(null);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -16,6 +17,16 @@ export const BookingForm = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(doc(db, 'siteContent', 'home'), 
+      (snap) => {
+        if (snap.exists()) setContent(snap.data());
+      },
+      (error) => handleFirestoreError(error, OperationType.GET, 'siteContent/home')
+    );
+    return unsubscribe;
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,12 +86,12 @@ export const BookingForm = () => {
           <div className="space-y-8">
              <div>
                <h4 className="text-accent-gold uppercase tracking-widest text-xs font-semibold mb-2">Office Address</h4>
-               <p className="text-xl font-serif">Level 12, Crystal Palace, Gulshan 2, Dhaka</p>
+               <p className="text-xl font-serif">{content?.officeAddress || "Level 12, Crystal Palace, Gulshan 2, Dhaka"}</p>
              </div>
              <div>
                <h4 className="text-accent-gold uppercase tracking-widest text-xs font-semibold mb-2">Contact Info</h4>
-               <p className="text-xl font-serif">+880 1711 000000</p>
-               <p className="text-xl font-serif">info@khondokarproperties.com</p>
+               <p className="text-xl font-serif">{content?.contactPhone || "+880 1711 000000"}</p>
+               <p className="text-xl font-serif">{content?.contactEmail || "info@khondokarproperties.com"}</p>
              </div>
           </div>
         </div>

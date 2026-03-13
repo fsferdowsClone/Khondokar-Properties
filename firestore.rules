@@ -52,6 +52,12 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Site Content
+    match /siteContent/{contentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // User Profiles (for role management)
     match /users/{userId} {
       allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
