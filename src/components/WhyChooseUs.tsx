@@ -68,7 +68,7 @@ export const WhyChooseUs = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-6xl font-serif leading-tight mb-8"
+            className="text-5xl md:text-7xl font-serif leading-[0.9] mb-10"
           >
             {content?.aboutHeadline || <>Why <span className="italic">Khondokar</span> Properties?</>}
           </motion.h2>
@@ -76,12 +76,12 @@ export const WhyChooseUs = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-text-muted text-lg mb-12 leading-relaxed"
+            className="text-text-muted text-lg md:text-xl mb-12 leading-relaxed font-light"
           >
             {content?.aboutText || "We don't just sell properties; we build legacies. Our commitment to transparency and excellence has made us a trusted name in Dhaka's premium real estate market."}
           </motion.p>
 
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
             {reasons.map((reason, i) => (
               <motion.div
                 key={i}
@@ -91,10 +91,10 @@ export const WhyChooseUs = () => {
                 transition={{ delay: i * 0.1 }}
                 className="flex items-center gap-4 group"
               >
-                <div className="w-10 h-10 rounded-full bg-accent-teal/10 flex items-center justify-center text-accent-teal group-hover:bg-accent-teal group-hover:text-background transition-colors">
+                <div className="w-12 h-12 rounded-full border border-accent-gold/20 flex items-center justify-center text-accent-gold group-hover:bg-accent-gold group-hover:text-background transition-all duration-500">
                   <CheckCircle2 size={20} />
                 </div>
-                <span className="text-lg font-medium">{reason}</span>
+                <span className="text-base md:text-lg font-medium tracking-tight">{reason}</span>
               </motion.div>
             ))}
           </div>

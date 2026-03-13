@@ -24,20 +24,35 @@
 @layer base {
   body {
     @apply bg-background text-text-primary font-sans antialiased selection:bg-accent-gold selection:text-background;
+    background-image: radial-gradient(circle at 50% 50%, rgba(166, 139, 91, 0.03) 0%, transparent 100%);
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, .font-serif {
-    @apply font-serif;
+    @apply font-serif tracking-tight;
   }
 }
 
 @layer utilities {
   .glass {
-    @apply bg-glass backdrop-blur-md border border-white/10;
+    @apply bg-glass backdrop-blur-xl border border-white/10;
   }
 
-  .text-balance {
-    text-wrap: balance;
+  .luxury-shadow {
+    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  .gold-gradient {
+    background: linear-gradient(135deg, #A68B5B 0%, #D4AF37 50%, #A68B5B 100%);
+  }
+
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #A68B5B 0%, #F5F5F5 50%, #A68B5B 100%);
+  }
+
+  .mask-fade-bottom {
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
   }
 }
 

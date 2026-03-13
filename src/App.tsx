@@ -8,6 +8,7 @@ import { WhyChooseUs } from './components/WhyChooseUs';
 import { VideoShowcase } from './components/VideoShowcase';
 import { BookingForm } from './components/BookingForm';
 import { Footer } from './components/Footer';
+import { ContextualInfo } from './components/ContextualInfo';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 
@@ -82,9 +83,18 @@ const PublicSite = () => {
   return (
     <div className="relative min-h-screen bg-background selection:bg-accent-gold selection:text-background">
       <Navbar />
+      <ContextualInfo />
       
       <main>
-        <HeroSection />
+        <div data-info="hero" className="relative group/info">
+          <div className="absolute top-32 right-8 z-30 opacity-0 group-hover/info:opacity-100 transition-opacity duration-500 hidden lg:block">
+            <div className="flex items-center gap-2 text-accent-gold/50 text-[10px] uppercase tracking-widest">
+              <span>Click for Insight</span>
+              <div className="w-4 h-[1px] bg-accent-gold/30" />
+            </div>
+          </div>
+          <HeroSection />
+        </div>
         
         {/* Categories Section */}
         <section className="py-20 px-6 md:px-12 border-y border-border">
@@ -108,14 +118,20 @@ const PublicSite = () => {
           </div>
         </section>
 
-        <PropertyGrid />
+        <div data-info="properties">
+          <PropertyGrid />
+        </div>
         
-        <VideoShowcase />
+        <div data-info="video">
+          <VideoShowcase />
+        </div>
         
-        <WhyChooseUs />
+        <div data-info="why">
+          <WhyChooseUs />
+        </div>
 
         {/* Testimonials Section */}
-        <section className="py-32 px-6 md:px-12 max-w-7xl mx-auto text-center">
+        <section data-info="testimonials" className="py-32 px-6 md:px-12 max-w-7xl mx-auto text-center">
           <motion.span
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -157,7 +173,7 @@ const PublicSite = () => {
         </section>
         
         {/* Blog Section */}
-        <section id="blog" className="py-32 px-6 md:px-12 bg-background">
+        <section id="blog" data-info="blog" className="py-32 px-6 md:px-12 bg-background">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
               <div>
@@ -225,7 +241,9 @@ const PublicSite = () => {
           </div>
         </section>
 
-        <BookingForm />
+        <div data-info="booking">
+          <BookingForm />
+        </div>
       </main>
 
       <Footer />

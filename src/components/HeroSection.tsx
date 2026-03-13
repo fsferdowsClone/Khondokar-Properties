@@ -71,7 +71,7 @@ export const HeroSection = () => {
         </motion.div>
       </AnimatePresence>
 
-      <div className="relative z-20 max-w-4xl text-center">
+      <div className="relative z-20 max-w-5xl text-center">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
@@ -80,22 +80,22 @@ export const HeroSection = () => {
             exit={{ opacity: 0, y: -30 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="text-accent-gold uppercase tracking-[0.3em] text-xs font-semibold mb-6 block">
+            <span className="text-accent-gold uppercase tracking-[0.4em] text-[10px] md:text-xs font-bold mb-6 block">
               Excellence in Every Square Foot
             </span>
-            <h1 className="text-4xl sm:text-5xl md:text-8xl font-serif mb-8 leading-[1.1] text-balance">
+            <h1 className="text-5xl sm:text-7xl md:text-9xl font-serif mb-8 leading-[0.9] text-balance text-gradient-gold">
               {currentSlide === 0 && content?.heroHeadline ? content.heroHeadline : slides[currentSlide].headline}
             </h1>
-            <p className="text-text-muted text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
+            <p className="text-text-muted text-sm sm:text-base md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-light">
               {currentSlide === 0 && content?.heroSubheading ? content.heroSubheading : slides[currentSlide].subheading}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <button className="group relative bg-accent-gold text-background px-10 py-4 rounded-small font-semibold overflow-hidden transition-all duration-300 hover:bg-white">
-                <span className="relative z-10 flex items-center gap-2">
-                  Browse Properties <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              <button className="group relative bg-accent-gold text-background px-12 py-5 rounded-small font-bold uppercase tracking-widest text-xs overflow-hidden transition-all duration-500 hover:bg-white hover:scale-105 active:scale-95">
+                <span className="relative z-10 flex items-center gap-3">
+                  Browse Properties <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </span>
               </button>
-              <button className="px-10 py-4 rounded-small font-semibold border border-accent-teal/40 hover:bg-accent-teal/10 transition-all duration-300">
+              <button className="px-12 py-5 rounded-small font-bold uppercase tracking-widest text-xs border border-white/20 hover:bg-white/5 hover:border-white/40 transition-all duration-500">
                 Book Consultation
               </button>
             </div>
