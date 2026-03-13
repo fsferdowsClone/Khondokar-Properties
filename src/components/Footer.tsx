@@ -66,10 +66,15 @@ export const Footer = () => {
 
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-text-muted">
           <p>© 2026 Khondokar Properties. All rights reserved.</p>
-          <div className="flex gap-8">
-            <a href="#" className="hover:text-accent-gold">Privacy Policy</a>
-            <a href="#" className="hover:text-accent-gold">Terms of Service</a>
-            <Link to="/admin" className="hover:text-accent-gold">Admin Login</Link>
+          <div className="flex items-center gap-8">
+            <a href="#" className="hover:text-accent-gold transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-accent-gold transition-colors">Terms of Service</a>
+            <Link 
+              to="/admin" 
+              className="px-4 py-2 border border-accent-gold/30 rounded-small text-accent-gold hover:bg-accent-gold hover:text-background transition-all duration-300 font-semibold"
+            >
+              Staff Portal
+            </Link>
           </div>
         </div>
       </div>

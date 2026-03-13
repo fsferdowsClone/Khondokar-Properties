@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, Globe } from 'lucide-react';
+import { Menu, X, Globe, Lock } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 import { useLanguage } from '../contexts/LanguageContext';
+import { Link } from 'react-router-dom';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -65,6 +66,14 @@ export const Navbar = () => {
             {language === 'en' ? 'Bangla' : 'English'}
           </button>
 
+          <Link 
+            to="/admin" 
+            className="flex items-center gap-2 text-sm font-medium text-text-muted hover:text-accent-gold transition-colors"
+          >
+            <Lock size={16} />
+            Admin
+          </Link>
+
           <button className="bg-accent-gold text-background px-6 py-2 rounded-small text-sm font-semibold hover:bg-white transition-all duration-300">
             Book Visit
           </button>
@@ -122,6 +131,14 @@ export const Navbar = () => {
                     {link.name}
                   </a>
                 ))}
+                <Link
+                  to="/admin"
+                  className="text-2xl font-serif text-text-primary hover:text-accent-gold transition-colors flex items-center gap-3"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Lock size={20} />
+                  Admin Panel
+                </Link>
               </div>
               <div className="mt-auto pt-8 border-t border-border">
                 <button className="w-full bg-accent-gold text-background py-4 rounded-small font-semibold">
