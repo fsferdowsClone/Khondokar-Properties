@@ -70,7 +70,7 @@ export const BookingForm = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-6xl font-serif leading-tight mb-8"
+            className="text-3xl sm:text-4xl md:text-6xl font-serif leading-tight mb-8"
           >
             Book a <span className="italic">Property</span> Visit
           </motion.h2>
@@ -78,7 +78,7 @@ export const BookingForm = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-text-muted text-lg mb-12"
+            className="text-text-muted text-base sm:text-lg mb-12"
           >
             Ready to see your future home? Fill out the form and our expert consultants will get back to you within 24 hours.
           </motion.p>

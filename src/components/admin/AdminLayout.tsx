@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { auth, loginWithGoogle, logout } from '@/src/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { LayoutDashboard, Building2, BookOpen, MessageSquare, Settings, LogOut, Globe, Users } from 'lucide-react';
+import { LayoutDashboard, Building2, BookOpen, MessageSquare, Settings, LogOut, Globe, Users, Menu, X, Youtube } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
+import { cn } from '@/src/lib/utils';
 
 export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -102,23 +105,53 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
     { name: 'Properties', icon: Building2, path: '/admin/properties' },
     { name: 'Bookings', icon: MessageSquare, path: '/admin/bookings' },
     { name: 'Blog', icon: BookOpen, path: '/admin/blog' },
+    { name: 'Videos', icon: Youtube, path: '/admin/videos' },
     { name: 'Testimonials', icon: Users, path: '/admin/testimonials' },
     { name: 'Site Content', icon: Globe, path: '/admin/content' },
     { name: 'Settings', icon: Settings, path: '/admin/settings' },
   ];
 
   return (
-    <div className="flex h-screen bg-[#050505] text-text-primary overflow-hidden">
-      {/* Sidebar */}
-      <aside className="w-64 bg-surface border-r border-border flex flex-col">
-        <div className="p-6 border-b border-border flex items-center gap-3">
-          <img 
-            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yNTAgNTBMNTAgMjAwSDkwVjQ1MEgyMTBWMzAwSDI5MFY0NTBIMzkwVjIwMEg0NTBMMjUwIDUwWiIgZmlsbD0iIzAwMkI0OSIvPgo8cGF0aCBkPSJNMjUwIDUwTDE1MCAxMjVMMjUwIDIwMEwzNTAgMTI1TDI1MCA1MFoiIGZpbGw9IiMyRDZBNzQiLz4KPHBhdGggZD0iTTI1MCAyMDBMMTUwIDI3NVY0NTBIMjUwVjIwMFoiIGZpbGw9IiNBNjhCNUIiIG9wYWNpdHk9IjAuOCIvPgo8L3N2Zz4=" 
-            alt="Logo" 
-            className="w-8 h-8 object-contain"
-            referrerPolicy="no-referrer"
+    <div className="flex h-screen bg-[#050505] text-text-primary overflow-hidden relative">
+      {/* Mobile Sidebar Toggle */}
+      <button 
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        className="lg:hidden fixed bottom-6 right-6 z-[60] bg-accent-gold text-background p-4 rounded-full shadow-2xl"
+      >
+        {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      {/* Sidebar Overlay */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsSidebarOpen(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
           />
-          <span className="font-serif font-semibold tracking-tight">Admin CMS</span>
+        )}
+      </AnimatePresence>
+
+      {/* Sidebar */}
+      <aside className={cn(
+        "fixed inset-y-0 left-0 z-50 w-64 bg-surface border-r border-border flex flex-col transition-transform duration-300 lg:relative lg:translate-x-0",
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
+        <div className="p-6 border-b border-border flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img 
+              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yNTAgNTBMNTAgMjAwSDkwVjQ1MEgyMTBWMzAwSDI5MFY0NTBIMzkwVjIwMEg0NTBMMjUwIDUwWiIgZmlsbD0iIzAwMkI0OSIvPgo8cGF0aCBkPSJNMjUwIDUwTDE1MCAxMjVMMjUwIDIwMEwzNTAgMTI1TDI1MCA1MFoiIGZpbGw9IiMyRDZBNzQiLz4KPHBhdGggZD0iTTI1MCAyMDBMMTUwIDI3NVY0NTBIMjUwVjIwMFoiIGZpbGw9IiNBNjhCNUIiIG9wYWNpdHk9IjAuOCIvPgo8L3N2Zz4=" 
+              alt="Logo" 
+              className="w-8 h-8 object-contain"
+              referrerPolicy="no-referrer"
+            />
+            <span className="font-serif font-semibold tracking-tight">Admin CMS</span>
+          </div>
+          <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-text-muted">
+            <X size={20} />
+          </button>
         </div>
 
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
@@ -126,6 +159,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
             <Link
               key={item.name}
               to={item.path}
+              onClick={() => setIsSidebarOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-small transition-colors ${
                 location.pathname === item.path ? 'bg-accent-gold text-background' : 'text-text-muted hover:bg-white/5 hover:text-text-primary'
               }`}
@@ -161,7 +195,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto p-8">
+      <main className="flex-1 overflow-y-auto p-4 md:p-8">
         <div className="max-w-6xl mx-auto">
           {children}
         </div>

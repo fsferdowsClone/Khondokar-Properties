@@ -71,26 +71,50 @@ export const Navbar = () => {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-surface border-b border-border p-6 md:hidden flex flex-col gap-4"
-          >
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-lg font-medium text-text-muted hover:text-accent-gold"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.name}
-              </a>
-            ))}
-            <button className="bg-accent-gold text-background px-6 py-3 rounded-small text-center font-semibold">
-              Book Visit
-            </button>
-          </motion.div>
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+            />
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 bottom-0 w-[80%] max-w-xs bg-surface z-50 md:hidden flex flex-col p-8 shadow-2xl"
+            >
+              <div className="flex items-center justify-between mb-12">
+                <span className="font-serif text-xl font-semibold">Menu</span>
+                <button onClick={() => setIsMobileMenuOpen(false)} className="text-text-muted">
+                  <X size={24} />
+                </button>
+              </div>
+              <div className="flex flex-col gap-6">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="text-2xl font-serif text-text-primary hover:text-accent-gold transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </div>
+              <div className="mt-auto pt-8 border-t border-border">
+                <button className="w-full bg-accent-gold text-background py-4 rounded-small font-semibold">
+                  Book Visit
+                </button>
+                <div className="mt-8 flex flex-col gap-2 text-sm text-text-muted">
+                  <p>Gulshan 2, Dhaka</p>
+                  <p>+880 1711 000000</p>
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </nav>

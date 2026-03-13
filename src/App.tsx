@@ -5,6 +5,7 @@ import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { PropertyGrid } from './components/PropertyGrid';
 import { WhyChooseUs } from './components/WhyChooseUs';
+import { VideoShowcase } from './components/VideoShowcase';
 import { BookingForm } from './components/BookingForm';
 import { Footer } from './components/Footer';
 import { motion } from 'motion/react';
@@ -18,6 +19,7 @@ import { BookingManager } from './components/admin/BookingManager';
 import { BlogManager } from './components/admin/BlogManager';
 import { TestimonialManager } from './components/admin/TestimonialManager';
 import { ContentManager } from './components/admin/ContentManager';
+import { VideoManager } from './components/admin/VideoManager';
 
 import { db, handleFirestoreError, OperationType } from './firebase';
 import { collection, onSnapshot, query, orderBy, limit, doc } from 'firebase/firestore';
@@ -82,7 +84,7 @@ const PublicSite = () => {
         {/* Categories Section */}
         <section className="py-20 px-6 md:px-12 border-y border-border">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {['Luxury Apartments', 'Family Homes', 'Commercial Spaces', 'Investment Projects'].map((cat, i) => (
                 <motion.div
                   key={cat}
@@ -102,6 +104,8 @@ const PublicSite = () => {
         </section>
 
         <PropertyGrid />
+        
+        <VideoShowcase />
         
         <WhyChooseUs />
 
@@ -236,6 +240,7 @@ export default function App() {
         <Route path="/admin/properties" element={<AdminLayout><PropertyManager /></AdminLayout>} />
         <Route path="/admin/bookings" element={<AdminLayout><BookingManager /></AdminLayout>} />
         <Route path="/admin/blog" element={<AdminLayout><BlogManager /></AdminLayout>} />
+        <Route path="/admin/videos" element={<AdminLayout><VideoManager /></AdminLayout>} />
         <Route path="/admin/testimonials" element={<AdminLayout><TestimonialManager /></AdminLayout>} />
         <Route path="/admin/content" element={<AdminLayout><ContentManager /></AdminLayout>} />
         <Route path="/admin/settings" element={<AdminLayout><div className="text-center py-20 text-text-muted">Site Settings Coming Soon</div></AdminLayout>} />

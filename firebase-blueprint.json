@@ -84,6 +84,19 @@
           }
         }
       }
+    },
+    "Video": {
+      "title": "Video",
+      "description": "YouTube video showcase",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "youtubeUrl": { "type": "string", "description": "Full YouTube URL or ID" },
+        "thumbnail": { "type": "string", "description": "Custom thumbnail URL (optional)" },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "youtubeUrl"]
     }
   },
   "firestore": {
@@ -91,6 +104,7 @@
     "/blogPosts": { "schema": "BlogPost", "description": "Collection of blog articles" },
     "/testimonials": { "schema": "Testimonial", "description": "Collection of client testimonials" },
     "/bookings": { "schema": "Booking", "description": "Collection of visit requests" },
-    "/settings/global": { "schema": "SiteSettings", "description": "Global site settings document" }
+    "/settings/global": { "schema": "SiteSettings", "description": "Global site settings document" },
+    "/videos": { "schema": "Video", "description": "Collection of showcase videos" }
   }
 }

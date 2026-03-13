@@ -48,10 +48,10 @@ export const WhyChooseUs = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.5, duration: 0.8 }}
-            className="absolute -bottom-10 -right-10 glass p-10 rounded-xl hidden md:block max-w-xs"
+            className="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 glass p-6 md:p-10 rounded-xl hidden sm:block max-w-[200px] md:max-w-xs"
           >
-            <span className="text-4xl font-serif text-accent-gold block mb-2">15+</span>
-            <span className="text-sm text-text-muted uppercase tracking-widest font-semibold">Years of Excellence in Dhaka Real Estate</span>
+            <span className="text-3xl md:text-4xl font-serif text-accent-gold block mb-2">15+</span>
+            <span className="text-[10px] md:text-sm text-text-muted uppercase tracking-widest font-semibold">Years of Excellence in Dhaka Real Estate</span>
           </motion.div>
         </div>
 
