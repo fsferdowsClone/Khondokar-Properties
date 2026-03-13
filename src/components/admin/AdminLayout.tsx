@@ -40,7 +40,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
       <div className="h-screen flex items-center justify-center bg-background px-6">
         <div className="max-w-md w-full bg-surface p-10 rounded-xl border border-border text-center">
           <img 
-            src="https://raw.githubusercontent.com/stackblitz/stackblitz-images/main/real-estate-logo-luxury.png" 
+            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yNTAgNTBMNTAgMjAwSDkwVjQ1MEgyMTBWMzAwSDI5MFY0NTBIMzkwVjIwMEg0NTBMMjUwIDUwWiIgZmlsbD0iIzAwMkI0OSIvPgo8cGF0aCBkPSJNMjUwIDUwTDE1MCAxMjVMMjUwIDIwMEwzNTAgMTI1TDI1MCA1MFoiIGZpbGw9IiMyRDZBNzQiLz4KPHBhdGggZD0iTTI1MCAyMDBMMTUwIDI3NVY0NTBIMjUwVjIwMFoiIGZpbGw9IiNBNjhCNUIiIG9wYWNpdHk9IjAuOCIvPgo8L3N2Zz4=" 
             alt="Khondokar Properties" 
             className="w-20 h-20 mx-auto mb-6 object-contain"
             referrerPolicy="no-referrer"
@@ -73,7 +73,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
       <div className="h-screen flex items-center justify-center bg-background px-6">
         <div className="max-w-md w-full bg-surface p-10 rounded-xl border border-border text-center">
           <img 
-            src="https://raw.githubusercontent.com/stackblitz/stackblitz-images/main/real-estate-logo-luxury.png" 
+            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yNTAgNTBMNTAgMjAwSDkwVjQ1MEgyMTBWMzAwSDI5MFY0NTBIMzkwVjIwMEg0NTBMMjUwIDUwWiIgZmlsbD0iIzAwMkI0OSIvPgo8cGF0aCBkPSJNMjUwIDUwTDE1MCAxMjVMMjUwIDIwMEwzNTAgMTI1TDI1MCA1MFoiIGZpbGw9IiMyRDZBNzQiLz4KPHBhdGggZD0iTTI1MCAyMDBMMTUwIDI3NVY0NTBIMjUwVjIwMFoiIGZpbGw9IiNBNjhCNUIiIG9wYWNpdHk9IjAuOCIvPgo8L3N2Zz4=" 
             alt="Khondokar Properties" 
             className="w-20 h-20 mx-auto mb-6 object-contain"
             referrerPolicy="no-referrer"
@@ -113,7 +113,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
       <aside className="w-64 bg-surface border-r border-border flex flex-col">
         <div className="p-6 border-b border-border flex items-center gap-3">
           <img 
-            src="https://raw.githubusercontent.com/stackblitz/stackblitz-images/main/real-estate-logo-luxury.png" 
+            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yNTAgNTBMNTAgMjAwSDkwVjQ1MEgyMTBWMzAwSDI5MFY0NTBIMzkwVjIwMEg0NTBMMjUwIDUwWiIgZmlsbD0iIzAwMkI0OSIvPgo8cGF0aCBkPSJNMjUwIDUwTDE1MCAxMjVMMjUwIDIwMEwzNTAgMTI1TDI1MCA1MFoiIGZpbGw9IiMyRDZBNzQiLz4KPHBhdGggZD0iTTI1MCAyMDBMMTUwIDI3NVY0NTBIMjUwVjIwMFoiIGZpbGw9IiNBNjhCNUIiIG9wYWNpdHk9IjAuOCIvPgo8L3N2Zz4=" 
             alt="Logo" 
             className="w-8 h-8 object-contain"
             referrerPolicy="no-referrer"
